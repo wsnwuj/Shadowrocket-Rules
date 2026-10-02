@@ -1,5 +1,5 @@
-#!name=小火箭·开屏与弹窗更新 2026-10-02 R5 补充诊断版
-#!desc=R5：补充什么值得买和腾讯视频响应诊断；保留多种响应结构；拦截规则与R4相同，尚未确认消除残留开屏。
+#!name=小火箭·开屏与弹窗更新 2026-10-02 R6 定向测试版
+#!desc=R6：什么值得买开屏改为响应内禁用广告；腾讯补充diff/getvmind空响应。需实机验证，若影响正常视频请回退R5。
 #!system=ios
 #!author=wsnwuj；上游：ddgksf2013、fmz200、blackmatrix7、app2smile、Walvez、AWAvenue
 
@@ -121,10 +121,8 @@ DOMAIN,bootrealtime.uve.weibo.com,REJECT
 USER-AGENT,QIYIVideo*StartAd*,REJECT
 
 [URL Rewrite]
-^https?:\/\/app-api\.smzdm\.com(?::443)?\/util\/loading\/?(?:\?|$) - reject-dict
 ^https?:\/\/api\.m\.jd\.com\/client\.action\?(?:[^#]*&)?functionId=(homeAreaPop|home_launchConfig|lite_advertising|queryMaterialAdverts|smart_delivery_strategy)(?:&|$) - reject-dict
 
-^https?:\/\/api\.smzdm\.com\/v\d+\/util\/loading(?:\?.*)?$ - reject-dict
 ^https?:\/\/s\d+\.zdmimg\.com\/www\/api\/v\d+\/api\/thirdAd\.php - reject
 
 ^https?:\/\/cn-acs\.m\.cainiao\.com\/gw\/mtop\.cainiao\.guoguo\.nbnetflow\.ads\.(show|mshow)\.cn(?:\/|\?).* - reject-200
@@ -143,7 +141,6 @@ USER-AGENT,QIYIVideo*StartAd*,REJECT
 ^https?:\/\/iface\.iqiyi\.com\/api\/getNewAdInfo(?:\?|$) - reject-dict
 ^https?:\/\/act\.vip\.iqiyi\.com\/interact\/api\/(show\.do|v2\/show)(?:\?|$) - reject-dict
 
-^https?:\/\/vv\.video\.qq\.com\/getvmind\? - reject-200
 ^https?:\/\/splashqqlive\.gtimg\.com\/website\/\d{6} - reject-img
 ^https?:\/\/wa\.gtimg\.com\/adxcdn\/ - reject
 ^https?:\/\/pgdt\.gtimg\.cn\/ - reject-img
@@ -184,8 +181,9 @@ USER-AGENT,QIYIVideo*StartAd*,REJECT
 ^https?:\/\/(?:[a-zA-Z0-9_.-]+\.cainiao\.com|(?:acs|guide-acs|acs4miniapp-inner)\.m\.taobao\.com)\/gw\/mtop\.cainiao\.(?:nbopen\.miniapp\.recommend\.cpc\.cn|nbmensa\.research\.researchservice\.acquire\.cn)(?:\/|\?|$) - reject-dict
 
 [Script]
-StartupDiag_R5_Report = type=http-request,pattern=^https?:\/\/app-api\.smzdm\.com(?::443)?\/__sr_diag_r[45](?:\?[^#]*)?$,script-path=https://raw.githubusercontent.com/wsnwuj/Shadowrocket-Rules/518f8139b021504785ff1c6efe98ad692326cc00/modules/startup-ads/startup-diag-r5.js,timeout=10
-StartupDiag_R5_Response = type=http-response,requires-body=1,max-size=1048576,pattern=^https?:\/\/(?:app-api\.smzdm\.com(?::443)?\/util\/update\/?(?:\?|$)|common-api\.smzdm\.com(?::443)?\/ab\/config\/?(?:\?|$)|rdelivery\.qq\.com(?::443)?\/(?:v3\/config\/pull|v1\/sdkconfig\/get)\/?(?:\?|$)|vv(?:6)?\.video\.qq\.com(?::443)?\/(?:batchvinfo|(?:diff|get)vmind)\/?(?:\?|$)),script-path=https://raw.githubusercontent.com/wsnwuj/Shadowrocket-Rules/518f8139b021504785ff1c6efe98ad692326cc00/modules/startup-ads/startup-diag-r5.js,timeout=10
+Startup_R6_Report = type=http-request,pattern=^https?:\/\/app-api\.smzdm\.com(?::443)?\/__sr_diag_r[456](?:\?[^#]*)?$,script-path=https://raw.githubusercontent.com/wsnwuj/Shadowrocket-Rules/7689ed6201bc10b57ebfda5db024782a7531f3d0/modules/startup-ads/startup-targeted-r6.js,timeout=10
+SMZDM_R6_Loading = type=http-response,requires-body=1,max-size=1048576,pattern=^https?:\/\/(?:app-api\.smzdm\.com(?::443)?\/util\/loading|api\.smzdm\.com(?::443)?\/v\d+\/util\/loading)\/?(?:\?[^#]*)?$,script-path=https://raw.githubusercontent.com/wsnwuj/Shadowrocket-Rules/7689ed6201bc10b57ebfda5db024782a7531f3d0/modules/startup-ads/startup-targeted-r6.js,timeout=10
+Tencent_R6_Vmind = type=http-request,pattern=^https?:\/\/vv(?:6)?\.video\.qq\.com(?::443)?\/(?:diff|get)vmind\/?(?:\?[^#]*)?$,script-path=https://raw.githubusercontent.com/wsnwuj/Shadowrocket-Rules/7689ed6201bc10b57ebfda5db024782a7531f3d0/modules/startup-ads/startup-targeted-r6.js,timeout=10
 京东_启动及浮层净化 = type=http-response,requires-body=1,max-size=-1,pattern=^https?:\/\/api\.m\.jd\.com\/client\.action\?(?:[^#]*&)?functionId=(start|deliverLayer|welcomeHome)(?:&|$),script-path=https://raw.githubusercontent.com/fmz200/wool_scripts/5d5f63fcf98bc69d5f8f1b1bae6f86a01ee4bb97/Scripts/jingdong/jingdong.js,timeout=20
 
 什么值得买_广告分发去广告 = type=http-response,requires-body=1,max-size=-1,pattern=^https?:\/\/.*\.zdmimg\.com\/cpm\/api\/v\d\/advert_distribution\/get_all_advertise,script-path=https://raw.githubusercontent.com/ddgksf2013/Scripts/314f61060a4c72c8a8b9f6b2ff457c8d35abbdac/smzdm_json.js,timeout=20
