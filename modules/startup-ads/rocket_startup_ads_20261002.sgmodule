@@ -1,0 +1,275 @@
+# Local snapshot. No remote update URL: prevents reverting to the old Gist.
+#!name=小火箭·开屏与弹窗更新 2026-10-02
+#!desc=基于原精选模块更新；新增淘宝/拼多多，修复B站素材扩展名，补充日志漏网域名。规则与脚本已静态检查，iPhone实机效果待验证。
+#!system=ios
+#!author=wsnwuj；上游：ddgksf2013、fmz200、blackmatrix7、app2smile、Walvez、AWAvenue
+
+# 核查日期：2026-10-02（北京时间）。脚本固定到核查时的 Git 提交。
+# 本模块替换旧 rocket_startup_ads.sgmodule 使用；不要同时启用两份。
+# 保留原模块中12306、航旅纵横、易捷、知乎、贴吧等已有规则。
+# 使用说明：启用 HTTPS 解密并安装、信任证书；首次使用建议彻底退出目标 App 后重开。
+# 规则原则：仅保留开屏/启动阶段和少量必要广告响应，避免大范围拦截主业务域名。
+# 主要来源：ddgksf2013、blackmatrix7、fmz200、app2smile、Walvez、Kelee 社区公开规则。
+
+[General]
+force-http-engine-hosts = %APPEND% api.m.jd.com,app-api.smzdm.com,api.smzdm.com,*.zdmimg.com,cn-acs.m.cainiao.com,netflow-mtop.cainiao.com,nbcps-mtop.cainiao.com,e2e-mtop.cainiao.com,longquan-mtop.cainiao.com,amdc.m.taobao.com,guide-acs.m.taobao.com,ad.12306.cn,home.umetrip.com,discardrp.umetrip.com,startup.umetrip.com,t7z.cupid.iqiyi.com,kjp.cupid.iqiyi.com,iface.iqiyi.com,act.vip.iqiyi.com,splashqqlive.gtimg.com,vv.video.qq.com,btrace.qq.com,mob.bz.mgtv.com,mobile.api.mgtv.com,mobile.da.mgtv.com,a.sinopecsales.com,ocrifs.ejoy.sinopec.com,api.zhihu.com,c.tieba.baidu.com,tiebac.baidu.com,tieba.baidu.com,baichuan.baidu.com,api.weibo.cn,api.weibo.com,mapi.weibo.cn,mapi.weibo.com,weibointl.api.weibo.cn,sdkapp.uve.weibo.com,wbapp.uve.weibo.com,preload-click.uve.weibo.com,preload-impression.uve.weibo.com,boot.biz.weibo.com,api.bilibili.com,app.bilibili.com,app.biliapi.net,upos-sz-static.bilivideo.com,acs.m.taobao.com,poplayer.template.alibaba.com,api.pinduoduo.com,api.yangkeduo.com,acs4miniapp-inner.m.taobao.com,homepage-api.smzdm.com,s-api.smzdm.com,*.cupid.iqiyi.com
+
+[Rule]
+# OpenAI / ChatGPT：强制代理并避免静态资源、上传和 API 被其他模块误伤
+DOMAIN-SUFFIX,oaistatic.com,PROXY
+DOMAIN-SUFFIX,oaiusercontent.com,PROXY
+DOMAIN-SUFFIX,chatgpt.com,PROXY
+DOMAIN-SUFFIX,openai.com,PROXY
+DOMAIN-SUFFIX,chatgpt.livekit.cloud,PROXY
+
+# 铁路12306：保持广告主机直连，避免被其他广告规则整域拦截；具体接口由下方脚本处理
+DOMAIN,ad.12306.cn,DIRECT
+
+# 悬浮时钟（App Store ID 1546947240）：仅拦截其隐私清单所示的聚推广告 SDK
+DOMAIN-SUFFIX,jutuiad.cn,REJECT
+
+# 2026-08-09 设备启动日志确认：菜鸟、悬浮时钟、腾讯视频、芒果TV调用的第三方广告供应链
+# 广点通
+DOMAIN-SUFFIX,gdt.qq.com,REJECT
+DOMAIN-SUFFIX,ugdtimg.com,REJECT
+DOMAIN,adsmind.gdtimg.com,REJECT
+DOMAIN,sdkquic.e.qq.com,REJECT
+
+# Ubix、1RTB、穿山甲
+DOMAIN-SUFFIX,ubixioe.com,REJECT
+DOMAIN-SUFFIX,1rtb.net,REJECT
+DOMAIN,imp.voiceads.cn,REJECT
+DOMAIN,api-access.pangolin-sdk-toutiao.com,REJECT
+DOMAIN,api-access.pangolin-sdk-toutiao1.com,REJECT
+DOMAIN,api-access.pangolin-sdk-toutiao-b.com,REJECT
+DOMAIN-SUFFIX,pglstatp-toutiao.com,REJECT
+
+# 悬浮时钟实际调用的 Sigmob、倍孜、云析、推啊和百度广告 SDK
+DOMAIN-SUFFIX,sigmob.cn,REJECT
+DOMAIN-SUFFIX,beizi.biz,REJECT
+DOMAIN-SUFFIX,yunxish.com,REJECT
+DOMAIN-SUFFIX,tuia.cn,REJECT
+DOMAIN,mobads.baidu.com,REJECT
+DOMAIN,mobads-logs.baidu.com,REJECT
+DOMAIN,sdk.zhangyuyidong.cn,REJECT
+
+# 芒果TV启动阶段调用的 Tanx 与 FancyDSP
+DOMAIN,df.tanx.com,REJECT
+DOMAIN,ef-dongfeng.tanx.com,REJECT
+DOMAIN,et.tanx.com,REJECT
+DOMAIN,rdstat.tanx.com,REJECT
+DOMAIN-SUFFIX,fancydsp.com,REJECT
+DOMAIN-SUFFIX,fancyapi.com,REJECT
+
+# 微博公开维护源与设备日志同时确认的开屏广告域名
+DOMAIN,bootpreload.uve.weibo.com,REJECT
+DOMAIN,sdkapp.uve.weibo.com,REJECT
+DOMAIN,wbapp.uve.weibo.com,REJECT
+DOMAIN,adstrategy.biz.weibo.com,REJECT
+
+# 2026-10-02：取消旧的180.76.76.200整IP拒绝；新日志记录该地址208203次REJECT
+# 贴吧仍使用下方URL与JSON/Protobuf精确规则，避免无条件整IP拒绝。
+
+# 腾讯广告投放域名（启动阶段常用）
+DOMAIN,rdeliver.qq.com,REJECT
+DOMAIN,pgdt.gtimg.cn,REJECT
+DOMAIN,appcfg.v.qq.com,REJECT
+DOMAIN,tangram.e.qq.com,REJECT
+DOMAIN,us.l.qq.com,REJECT
+DOMAIN,sdk.e.qq.com,REJECT
+DOMAIN,p.l.qq.com,REJECT
+
+# 2026-08-12 代理日志确认：腾讯视频、芒果TV及其启动链路出现的广告 SDK
+DOMAIN-SUFFIX,gameley.com,REJECT
+DOMAIN-SUFFIX,tianmu.mobi,REJECT
+DOMAIN-SUFFIX,admobile.top,REJECT
+DOMAIN-SUFFIX,halomobi.com,REJECT
+DOMAIN-SUFFIX,adukwai.com,REJECT
+DOMAIN-SUFFIX,pangolin-dsp-toutiao.com,REJECT
+DOMAIN,polar-sdk-api.jiguang.cn,REJECT
+DOMAIN,ssp-sdk-api.jiguang.cn,REJECT
+DOMAIN,ssp-sdk-status.jiguang.cn,REJECT
+DOMAIN,www.vgjump.com,REJECT
+DOMAIN,japp-res-cdn.vgjump.com,REJECT
+DOMAIN,switch-cdn.vgjump.com,REJECT
+DOMAIN-SUFFIX,adtrack.enlightent.cn,REJECT
+DOMAIN,nb-ssp.oss-cn-beijing.aliyuncs.com,REJECT
+DOMAIN,afdconf.baidu.com,REJECT
+
+# 2026-08-14、2026-08-21 代理日志确认：仍直连的广告素材、广告 SDK 与测量链路
+DOMAIN-SUFFIX,pangolin-sdk-toutiao.com,REJECT
+DOMAIN-SUFFIX,tobidad.cn,REJECT
+DOMAIN-SUFFIX,etoolads.cn,REJECT
+DOMAIN,sdklog.zhangyuyidong.cn,REJECT
+DOMAIN,jt-sdk-ios.oss-cn-beijing.aliyuncs.com,REJECT
+DOMAIN,mobads-pre-config.cdn.bcebos.com,REJECT
+DOMAIN-SUFFIX,adkwai.com,REJECT
+DOMAIN-SUFFIX,uyunad.com,REJECT
+DOMAIN,dsp.ads.umeng.com,REJECT
+DOMAIN,nadvideo2.baidu.com,REJECT
+DOMAIN,ads.cup.com.cn,REJECT
+DOMAIN-SUFFIX,app-ads-services.com,REJECT
+DOMAIN,ca.iadsdk.apple.com,REJECT
+DOMAIN,api-adservices.apple.com,REJECT
+DOMAIN,admonitor-feedback.cn-hangzhou.log.aliyuncs.com,REJECT
+DOMAIN,x.da.hunantv.com,REJECT
+DOMAIN,d.da.mgtv.com,REJECT
+DOMAIN,disp.titan.mgtv.com,REJECT
+# 2026-09-18 芒果TV 9.4.3 日志与多个公开广告规则库共同确认
+DOMAIN,y.da.hunantv.com,REJECT
+DOMAIN,mobile.da.mgtv.com,REJECT
+DOMAIN,hunantv-mipdx.cn.miaozhen.com,REJECT
+# 2026-09-18 芒果TV 9.4.3 日志与公开广告列表共同确认
+DOMAIN,hunantv.m.cn.miaozhen.com,REJECT
+DOMAIN,tytx.m.cn.miaozhen.com,REJECT
+DOMAIN,iqiyi-mipdx.cn.miaozhen.com,REJECT
+DOMAIN,g.cn.miaozhen.com,REJECT
+
+# 2026-10-02：日志中实际直连，且秋风 Only.Ads 当前列表明确收录；使用完整域名
+# 共享广告SDK也会影响其它调用同一SDK的App；日志本身不能准确归属到悬浮时钟
+DOMAIN,sdk.adhuanxiao.com,REJECT
+DOMAIN,yumao.puata.info,REJECT
+DOMAIN,iosid.zhangyuyidong.cn,REJECT
+DOMAIN,sdktmp.hubcloud.com.cn,REJECT
+DOMAIN,log-api.pangolin-sdk-toutiao-b.com,REJECT
+
+# 芒果TV：当前fmz200芒果TV独立规则与本次日志交集（广告域/浮层域）
+DOMAIN,ys.da.mgtv.com,REJECT
+DOMAIN,v2.da.mgtv.com,REJECT
+DOMAIN,layer.bz.mgtv.com,REJECT
+DOMAIN,dflow.bz.mgtv.com,REJECT
+
+# 微博：fmz200当前开屏实时分发地址；预加载地址原模块已有
+DOMAIN,bootrealtime.uve.weibo.com,REJECT
+
+# 爱奇艺：本次日志中4条HTTP请求的UA明确含StartAd；仅拦开屏资源客户端
+# HTTPS若未解密，按UA匹配不保证生效；本条不是屏蔽共享视频CDN
+USER-AGENT,QIYIVideo*StartAd*,REJECT
+
+[URL Rewrite]
+# ===== 京东 =====
+# 仅广告专用接口返回空字典；start/deliverLayer/welcomeHome 用响应脚本保留业务字段
+^https?:\/\/api\.m\.jd\.com\/client\.action\?(?:[^#]*&)?functionId=(homeAreaPop|home_launchConfig|lite_advertising|queryMaterialAdverts|smart_delivery_strategy)(?:&|$) - reject-dict
+
+# ===== 什么值得买 =====
+^https?:\/\/api\.smzdm\.com\/v\d+\/util\/loading(?:\?.*)?$ - reject-dict
+^https?:\/\/s\d+\.zdmimg\.com\/www\/api\/v\d+\/api\/thirdAd\.php - reject
+
+# ===== 菜鸟 =====
+^https?:\/\/cn-acs\.m\.cainiao\.com\/gw\/mtop\.cainiao\.guoguo\.nbnetflow\.ads\.(show|mshow)\.cn(?:\/|\?).* - reject-200
+^https?:\/\/(?:[a-zA-Z0-9_.-]+\.cainiao\.com|(?:acs|guide-acs|acs4miniapp-inner)\.m\.taobao\.com)\/gw\/mtop\.cainiao\.guoguo\.nbnetflow\.ads\.(?!.*_home) - reject-200
+^https?:\/\/(?:[a-zA-Z0-9_.-]+\.cainiao\.com|(?:acs|guide-acs|acs4miniapp-inner)\.m\.taobao\.com)\/gw\/mtop\.cainiao\.nbcps\.presentation\.fetch\.cn - reject-200
+^https?:\/\/(?:[a-zA-Z0-9_.-]+\.cainiao\.com|(?:acs|guide-acs|acs4miniapp-inner)\.m\.taobao\.com)\/gw\/mtop\.cainiao\.app\.home\.v\d+\.bottom\.area - reject-200
+^https?:\/\/longquan-mtop\.cainiao\.com\/gw\/mtop\.com\.cainiao\.longquan\.place\.getpageresourcecontent\.cn - reject-200
+
+# ===== 铁路12306 =====
+^https?:\/\/ad\.12306\.cn\/ad\/mon\/mzc(?:\?.*)?$ - reject
+
+# ===== 航旅纵横 Pro =====
+# 未采用 oss.umetrip.com/fs/advert/polite：公开维护源注明可能误杀首页横幅
+^https?:\/\/(discardrp|startup)\.umetrip\.com\/gateway\/api\/umetrip\/native(?:\?.*)?$ - reject-200
+
+# ===== 悬浮时钟 =====
+^https?:\/\/sdk\.1rtb\.net\/sdk\/req_ad(?:\?.*)?$ - reject-dict
+^https?:\/\/sdklog\.zhangyuyidong\.cn\/sdk\/lurl(?:\?.*)?$ - reject-200
+
+# ===== 爱奇艺 =====
+^https?:\/\/iface\.iqiyi\.com\/api\/getNewAdInfo(?:\?|$) - reject-dict
+^https?:\/\/act\.vip\.iqiyi\.com\/interact\/api\/(show\.do|v2\/show)(?:\?|$) - reject-dict
+
+# ===== 腾讯视频 =====
+^https?:\/\/vv\.video\.qq\.com\/getvmind\? - reject-200
+^https?:\/\/splashqqlive\.gtimg\.com\/website\/\d{6} - reject-img
+^https?:\/\/wa\.gtimg\.com\/adxcdn\/ - reject
+^https?:\/\/pgdt\.gtimg\.cn\/ - reject-img
+^https?:\/\/btrace\.qq\.com(?:\/|$) - reject-200
+
+# ===== 芒果TV =====
+^https?:\/\/mobile\.da\.mgtv\.com\/json\/app\/bdboot(?:\?|$) - reject-dict
+^https?:\/\/mobile\.da\.mgtv\.com\/app\/el(?:\?|$) - reject-200
+^https?:\/\/mobile\.da\.mgtv\.com\/m\/page(?:\?|$) - reject-200
+^https?:\/\/mobile\.da\.mgtv\.com\/creative\/list(?:\?|$) - reject-dict
+^https?:\/\/mob\.bz\.mgtv\.com\/odin\/c1\/channel\/ads(?:\?|$) - reject-dict
+^https?:\/\/mobile\.api\.mgtv\.com\/mobile\/config\?_support - reject-dict
+^https?:\/\/d\.da\.mgtv\.com\/info(?:\?.*)?$ - reject-dict
+
+# ===== 中国石化 / 易捷加油 =====
+^https?:\/\/a\.sinopecsales\.com\/app\/cms(?:\?.*)?$ - reject-dict
+^https?:\/\/ocrifs\.ejoy\.sinopec\.com\/advertitfs\/advert\/findAdvertInfo(?:\?.*)?$ - reject-dict
+
+# ===== 知乎 =====
+^https?:\/\/api\.zhihu\.com\/commercial_api\/(launch_v2|real_time_launch_v2)(?:\?.*)?$ - reject-dict
+^https?:\/\/api\.zhihu\.com\/(launch|real_time)(?:\?.*)?$ - reject-dict
+
+# ===== 百度贴吧 =====
+^https?:\/\/c\.tieba\.baidu\.com\/c\/s\/splashSchedule(?:\?.*)?$ - reject
+^https?:\/\/tiebac\.baidu\.com\/c\/f\/ad\/getSplashAd(?:\?.*)?$ - reject-dict
+^https?:\/\/tiebac\.baidu\.com\/c\/s\/adLog(?:\?.*)?$ - reject-200
+^https?:\/\/baichuan\.baidu\.com\/rs\/adpmobile\/launch(?:\?.*)?$ - reject
+
+# ===== 微博 =====
+^https?:\/\/api\.weibo\.cn\/2\/client\/launch(?:\?.*)?$ - reject-dict
+^https?:\/\/api\.weibo\.cn\/2\/ad\/preload(?:\?.*)?$ - reject-dict
+^https?:\/\/(preload-click|preload-impression)\.uve\.weibo\.com\/(interface\/wbpullad\/wbpullad_click\.php|wbapplua\/get_wbpullad_log\.lua) - reject
+
+# ===== 哔哩哔哩 =====
+# 大会员广告素材曝光上报；日志与公开 API 文档、广告规则库共同确认
+^https?:\/\/api\.bilibili\.com\/x\/vip\/ads\/material\/report(?:\?.*)?$ - reject-200
+^https?:\/\/upos-sz-static\.bilivideo\.com\/ssaxcode\/[^?#]+-1-SPLASH(?:\.(?:mp4|m4v|mov|webm))?(?:\?[^#]*)?$ - reject
+
+# ===== 2026-10-02 新增：淘宝、拼多多与微博弹窗 =====
+# 来源：fmz200/wool_scripts 的对应独立模块；未整域拦截购物主站
+# 淘宝广告服务：开屏图片/视频与Poplayer由下方脚本精确处理
+^https?:\/\/acs\.m\.taobao\.com\/gw\/mtop\.alibaba\.advertisementservice\.getadv(?:\/|\?|$) - reject-dict
+# 拼多多：开屏与上游列出的活动分发接口；不保证去除客户端内置的所有红包弹窗
+^https?:\/\/api\.(pinduoduo|yangkeduo)\.com\/api\/cappuccino\/splash(?:\/|\?|$) - reject-200
+^https?:\/\/api\.pinduoduo\.com\/api\/aquarius\/hungary\/global\/homepage\? - reject-dict
+# 微博：首页左上角每日提示
+^https?:\/\/m?api\.weibo\.c(n|om)\/\d\/push\/daily(?:\?|$) - reject-dict
+
+# 菜鸟：补支付宝小程序广告请求；主App沿用原精确脚本
+^https?:\/\/(guide-acs|acs4miniapp-inner)\.m\.taobao\.com\/gw\/mtop\.cainiao\.guoguo\.nbnetflow\.ads\. - reject-200
+# 菜鸟：上游列出的商品推荐和问卷获取接口，不拦包裹/取件业务
+^https?:\/\/(?:[a-zA-Z0-9_.-]+\.cainiao\.com|(?:acs|guide-acs|acs4miniapp-inner)\.m\.taobao\.com)\/gw\/mtop\.cainiao\.(?:nbopen\.miniapp\.recommend\.cpc\.cn|nbmensa\.research\.researchservice\.acquire\.cn)(?:\/|\?|$) - reject-dict
+
+[Script]
+# 京东：传统启动接口 JSON 精确净化
+京东_启动及浮层净化 = type=http-response,requires-body=1,max-size=-1,pattern=^https?:\/\/api\.m\.jd\.com\/client\.action\?(?:[^#]*&)?functionId=(start|deliverLayer|welcomeHome)(?:&|$),script-path=https://raw.githubusercontent.com/fmz200/wool_scripts/5d5f63fcf98bc69d5f8f1b1bae6f86a01ee4bb97/Scripts/jingdong/jingdong.js,timeout=20
+
+# 什么值得买：开屏响应清理
+什么值得买_开屏去广告 = type=http-response,requires-body=1,max-size=-1,pattern=^https?:\/\/app-api\.smzdm\.com\/util\/loading(?:\?.*)?$,script-path=https://raw.githubusercontent.com/ddgksf2013/Scripts/314f61060a4c72c8a8b9f6b2ff457c8d35abbdac/smzdm_json.js,timeout=20
+什么值得买_广告分发去广告 = type=http-response,requires-body=1,max-size=-1,pattern=^https?:\/\/.*\.zdmimg\.com\/cpm\/api\/v\d\/advert_distribution\/get_all_advertise,script-path=https://raw.githubusercontent.com/ddgksf2013/Scripts/314f61060a4c72c8a8b9f6b2ff457c8d35abbdac/smzdm_json.js,timeout=20
+
+# 菜鸟：首页/我的页面/搜索框推广响应净化
+菜鸟_amdc = type=http-response,requires-body=1,max-size=-1,pattern=^http:\/\/amdc\.m\.taobao\.com,script-path=https://raw.githubusercontent.com/ddgksf2013/Scripts/314f61060a4c72c8a8b9f6b2ff457c8d35abbdac/amdc.js,timeout=20
+菜鸟_响应去推广 = type=http-response,requires-body=1,max-size=-1,pattern=^https?:\/\/(?:[a-zA-Z0-9_.-]+\.cainiao\.com|(?:acs|guide-acs|acs4miniapp-inner)\.m\.taobao\.com)\/gw\/mtop\.cainiao\.(app\.e2e\.engine\.page\.fetch|nbpresentation\.homepage\.merge\.get\.cn|nbpresentation\.protocol\.homepage\.get\.cn|adkeyword),script-path=https://raw.githubusercontent.com/ddgksf2013/Scripts/314f61060a4c72c8a8b9f6b2ff457c8d35abbdac/cainiao_json.js,timeout=20
+
+# 铁路12306：修改开屏广告响应，避免整域拒绝造成业务异常
+铁路12306_开屏去广告 = type=http-response,requires-body=1,max-size=-1,pattern=^https?:\/\/ad\.12306\.cn\/ad\/ser\/getAdList(?:\?.*)?$,script-path=https://raw.githubusercontent.com/ddgksf2013/Scripts/314f61060a4c72c8a8b9f6b2ff457c8d35abbdac/12306.js,timeout=20
+
+# 航旅纵横 Pro：首页原生启动广告响应清理
+航旅纵横Pro_开屏去广告 = type=http-response,requires-body=1,max-size=-1,pattern=^https?:\/\/(114\.115\.217\.129|home\.umetrip\.com)\/gateway\/api\/umetrip\/native(?:\?.*)?$,script-path=https://raw.githubusercontent.com/fmz200/wool_scripts/5d5f63fcf98bc69d5f8f1b1bae6f86a01ee4bb97/Scripts/umetrip/umetrip_ads.js,timeout=20
+
+# 爱奇艺：mixer 开屏响应清理
+爱奇艺_开屏去广告 = type=http-response,requires-body=1,max-size=-1,pattern=^https?:\/\/[\w.-]+\.cupid\.iqiyi\.com\/mixer\?,script-path=https://raw.githubusercontent.com/ddgksf2013/Scripts/314f61060a4c72c8a8b9f6b2ff457c8d35abbdac/iqiyi_open_ads.js,timeout=20
+
+# 百度贴吧：JSON 与 protobuf 广告清理
+百度贴吧_JSON去广告 = type=http-response,requires-body=1,max-size=-1,pattern=^https?:\/\/(tiebac|c\.tieba)\.baidu\.com\/(c\/(s\/sync|f\/(ad\/getSplashAd|frs\/(page|threadlist|generalTabList)|pb\/(pic)?page|excellent\/personalized))$|tiebaads\/commonbatch\?),script-path=https://raw.githubusercontent.com/app2smile/rules/df6366a7024e0b3f0aa3510c5b791eea6f3cba89/js/tieba-json.js,timeout=20
+百度贴吧_PROTO去广告 = type=http-response,requires-body=1,binary-body-mode=1,max-size=-1,pattern=^https?:\/\/(tiebac|c\.tieba)\.baidu\.com\/c\/(b\/ad\/adBid|f\/(frs\/(page|threadlist|generalTabList)|ad\/getFeedAd|pb\/page|excellent\/personalized))\?cmd,script-path=https://raw.githubusercontent.com/app2smile/rules/df6366a7024e0b3f0aa3510c5b791eea6f3cba89/js/tieba-proto.js,timeout=20
+
+# 微博：启动广告策略与 UVE 开屏响应净化
+微博_开屏响应去广告 = type=http-response,requires-body=1,max-size=-1,pattern=^https?:\/\/(boot.*weibo\.com\/v\d\/ad\/(preload|realtime)|(sdkapp|wbapp)\.uve\.weibo\.com\/),script-path=https://raw.githubusercontent.com/ddgksf2013/Scripts/314f61060a4c72c8a8b9f6b2ff457c8d35abbdac/weibo_json.js,timeout=20
+
+# 哔哩哔哩：兼容 app.bilibili.com 与 app.biliapi.net 新旧开屏接口
+哔哩哔哩_开屏去广告 = type=http-response,requires-body=1,max-size=-1,pattern=^https?:\/\/app\.bili(bili\.com|api\.net)\/x\/v2\/splash\/(brand\/list|event\/list2?|list|show)(?:\?|$),script-path=https://raw.githubusercontent.com/Walvez/surge-startup-ads/d50d33cbd187f68778d8ca0b977c09f12cc23983/scripts/bilibili-splash-ads.js,timeout=20
+
+# 淘宝开屏图片/视频与活动弹层，分开命名避免同名脚本覆盖
+淘宝_开屏 = type=http-response,requires-body=1,max-size=-1,pattern=^https:\/\/guide-acs\.m\.taobao\.com\/gw\/mtop\.taobao\.(cloudvideo\.video\.query|wireless\.home\.splash\.awesome\.get),script-path=https://raw.githubusercontent.com/fmz200/wool_scripts/5d5f63fcf98bc69d5f8f1b1bae6f86a01ee4bb97/Scripts/myBlockAds.js,timeout=20
+淘宝_活动弹层 = type=http-response,requires-body=1,max-size=-1,pattern=^https:\/\/poplayer\.template\.alibaba\.com\/\w+\.json,script-path=https://raw.githubusercontent.com/fmz200/wool_scripts/5d5f63fcf98bc69d5f8f1b1bae6f86a01ee4bb97/Scripts/myBlockAds.js,timeout=20
+
+# 什么值得买：首页红包/横幅与热标签红包；使用原作者现有响应净化分支
+什么值得买_首页推广 = type=http-response,requires-body=1,max-size=-1,pattern=^https?:\/\/homepage-api\.smzdm\.com\/v3\/home(?:\?|$),script-path=https://raw.githubusercontent.com/ddgksf2013/Scripts/314f61060a4c72c8a8b9f6b2ff457c8d35abbdac/smzdm_json.js,timeout=20
+什么值得买_红包标签 = type=http-response,requires-body=1,max-size=-1,pattern=^https?:\/\/s-api\.smzdm\.com\/sou\/filter\/tags\/hot_tags(?:\?|$),script-path=https://raw.githubusercontent.com/ddgksf2013/Scripts/314f61060a4c72c8a8b9f6b2ff457c8d35abbdac/smzdm_json.js,timeout=20
+
+[MITM]
+hostname = %APPEND% api.m.jd.com,app-api.smzdm.com,api.smzdm.com,*.zdmimg.com,*.cainiao.com,amdc.m.taobao.com,guide-acs.m.taobao.com,ad.12306.cn,114.115.217.129,home.umetrip.com,discardrp.umetrip.com,startup.umetrip.com,t7z.cupid.iqiyi.com,kjp.cupid.iqiyi.com,iface.iqiyi.com,act.vip.iqiyi.com,splashqqlive.gtimg.com,vv.video.qq.com,wa.gtimg.com,btrace.qq.com,mob.bz.mgtv.com,mobile.api.mgtv.com,mobile.da.mgtv.com,a.sinopecsales.com,ocrifs.ejoy.sinopec.com,api.zhihu.com,c.tieba.baidu.com,tiebac.baidu.com,tieba.baidu.com,baichuan.baidu.com,api.weibo.cn,api.weibo.com,mapi.weibo.cn,mapi.weibo.com,weibointl.api.weibo.cn,*.uve.weibo.com,boot.biz.weibo.com,api.bilibili.com,app.bilibili.com,app.biliapi.net,upos-sz-static.bilivideo.com,-*.oaistatic.com,-*.oaiusercontent.com,-*.chatgpt.com,-*.openai.com,-*.chatgpt.livekit.cloud,acs.m.taobao.com,poplayer.template.alibaba.com,api.pinduoduo.com,api.yangkeduo.com,acs4miniapp-inner.m.taobao.com,homepage-api.smzdm.com,s-api.smzdm.com,*.cupid.iqiyi.com
