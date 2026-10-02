@@ -1,17 +1,17 @@
-#!name=腾讯视频 T3.1 · 开屏网页临时诊断
-#!desc=与R7及T2.1同时使用；普通请求和响应保持原样。先打开http://omex.tc.qq.com/__sr_t3_check，点击开始记录，再启动腾讯视频一次。仅本地保存3分钟内的接口路径、字段类型和次数；隐藏长串标识，不保存查询参数、请求头或正文。
+#!name=腾讯视频 T3.2 · 剩余开屏控件临时诊断
+#!desc=与R7及T2.2.1一起使用；只观察五个域名的固定接口。打开https://omex.tc.qq.com/__sr_t3_check，点击开始记录，再启动腾讯视频一次，控件消失后回页面停止并复制JSON报告。3分钟自动停止记录，完成后关闭此模块。
 #!homepage=https://github.com/wsnwuj/Shadowrocket-Rules
 
-# This is an opt-in observer, not a verified new ad-removal rule.
-# Five exact TCP HTTPS hosts from the latest local test; no wildcard MITM or QUIC changes.
-# Keep R7 and T2.1 enabled. Remove/disable this temporary module after collecting a report.
+# Opt-in local observer; no additional ad-block rules. Ordinary traffic passes unchanged.
+# Bodies are scanned locally; raw bodies, headers and parameter values are never retained.
+# Script recording expiry does not disable MITM; disable this module after testing.
 
 [General]
-force-http-engine-hosts = %APPEND% omex.tc.qq.com,mcgi.v.qq.com
+force-http-engine-hosts = %APPEND% omex.tc.qq.com,iacc.qq.com
 
 [Script]
-Tencent_T3_1_Request_Observer = type=http-request,pattern=^https?:\/\/(?:(?:v\.qq\.com|m\.v\.qq\.com|vfiles\.gtimg\.cn|mcgi\.v\.qq\.com|rdelivery\.qq\.com)(?::(?:80|443))?\/|omex\.tc\.qq\.com(?::(?:80|443))?\/__sr_t3_(?:check|status|reset)(?:\?[^#]*)?$),script-path=https://raw.githubusercontent.com/wsnwuj/Shadowrocket-Rules/902335e4595a2e82999c49a478d9157d9f3b7c68/modules/startup-ads/tencent-diagnostic-t3-1.js,timeout=10
-Tencent_T3_1_Response_Observer = type=http-response,requires-body=1,max-size=1048576,pattern=^https?:\/\/(?:(?:m\.)?v\.qq\.com(?::(?:80|443))?\/(?![^?#]*\.(?:mp4|ts|m3u8|png|jpe?g|gif|webp|avif|woff2?|ttf|zip|js|css)(?:\?|$))|vfiles\.gtimg\.cn(?::(?:80|443))?\/[^?#]*\.(?:html?|json|config|config_list|txt)(?:\?|$)|mcgi\.v\.qq\.com(?::(?:80|443))?\/commdatav2(?:\?|$)|rdelivery\.qq\.com(?::(?:80|443))?\/v[123]\/(?:config|sdkconfig)\/(?:pull|batchpull|get)(?:\?|$)),script-path=https://raw.githubusercontent.com/wsnwuj/Shadowrocket-Rules/902335e4595a2e82999c49a478d9157d9f3b7c68/modules/startup-ads/tencent-diagnostic-t3-1.js,timeout=10
+Tencent_T3_2_Request_Observer = type=http-request,requires-body=1,max-size=1048576,pattern=^https?:\/\/(?:(?:iacc\.qq\.com(?::(?:80|443))?\/|vv6?\.video\.qq\.com(?::(?:80|443))?\/(?:getvinfo|batchvinfo)|rdelivery\.qq\.com(?::(?:80|443))?\/v[123]\/(?:config|sdkconfig)\/(?:pull|batchpull|get)|v\.qq\.com(?::(?:80|443))?\/cache\/wuji_public\/object)|(?:iacc\.qq\.com|vv6?\.video\.qq\.com|rdelivery\.qq\.com|v\.qq\.com)(?::(?:80|443))?\/__sr_t3_probe|omex\.tc\.qq\.com(?::(?:80|443))?\/__sr_t3_(?:check|status|reset|stop))(?:\?[^#]*)?$,script-path=https://raw.githubusercontent.com/wsnwuj/Shadowrocket-Rules/cd4a34c3ff01a6569c1e62b04aa38f296baaceb6/modules/startup-ads/tencent-diagnostic-t3-2.js,timeout=10
+Tencent_T3_2_Response_Observer = type=http-response,requires-body=1,max-size=1048576,pattern=^https?:\/\/(?:iacc\.qq\.com(?::(?:80|443))?\/|vv6?\.video\.qq\.com(?::(?:80|443))?\/(?:getvinfo|batchvinfo)|rdelivery\.qq\.com(?::(?:80|443))?\/v[123]\/(?:config|sdkconfig)\/(?:pull|batchpull|get)|v\.qq\.com(?::(?:80|443))?\/cache\/wuji_public\/object)(?:\?[^#]*)?$,script-path=https://raw.githubusercontent.com/wsnwuj/Shadowrocket-Rules/cd4a34c3ff01a6569c1e62b04aa38f296baaceb6/modules/startup-ads/tencent-diagnostic-t3-2.js,timeout=10
 
 [MITM]
-hostname = %APPEND% v.qq.com,m.v.qq.com,vfiles.gtimg.cn,mcgi.v.qq.com,rdelivery.qq.com
+hostname = %APPEND% iacc.qq.com,vv.video.qq.com,vv6.video.qq.com,rdelivery.qq.com,v.qq.com,omex.tc.qq.com
