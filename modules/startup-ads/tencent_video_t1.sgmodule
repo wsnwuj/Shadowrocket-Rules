@@ -1,9 +1,18 @@
-#!name=腾讯视频 T1 · info4/info6 补充测试
-#!desc=仅测试info4/info6域名拦截；配合现有R7使用。无法清除本地广告。若正片加载异常请停用本模块。9.04.56实机效果待验证。
+#!name=腾讯视频 T2 · 已确认汽车广告素材补充
+#!desc=配合R7使用；保留T1的info4/info6拦截，并按素材标识阻止两段已确认汽车广告的重新下载。仅覆盖这些素材，无法清除已预加载广告。9.04.56实机效果待验证。
 #!homepage=https://github.com/wsnwuj/Shadowrocket-Rules
 
-# Reference: https://github.com/fmz200/wool_scripts/blob/main/Loon/rule/TencentVideo.list
-# This two-host subset is a compatibility trial, not a confirmed splash fix.
+# info4/info6 reference: https://github.com/fmz200/wool_scripts/blob/main/Loon/rule/TencentVideo.list
+# Media identities below are public, unsigned creative assets, not account tokens.
+# Match the two confirmed creatives and their format variants; other media is unaffected.
+
+[General]
+force-http-engine-hosts = %APPEND% omex.tc.qq.com
+
 [Rule]
 DOMAIN,info4.video.qq.com,REJECT
 DOMAIN,info6.video.qq.com,REJECT
+URL-REGEX,^https?://omex\.tc\.qq\.com(?::(?:80|443))?/gzc_1000127_(?:0b53umccyaae6iaf3n46tzvnfi6dfsraik2a|0b53bybvuaadxiahgz4wqfvnkdwdlihqgxka)\.f\d+\.mp4(?:\?[^#]*)?$,REJECT
+
+[MITM]
+hostname = %APPEND% omex.tc.qq.com
