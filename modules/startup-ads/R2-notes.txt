@@ -1,0 +1,28 @@
+Shadowrocket startup ads module — 2026-10-02 R2
+
+Changes:
+- Add exact-domain rules for the Tencent advertising hosts c2.l.qq.com and p2.l.qq.com.
+- Replace the SMZDM /util/loading handler with guarded removal of the startup advertising payload, retaining response status fields.
+- Add a Cainiao netflow advertising response handler for requests not rejected by existing rules, retaining the upstream material 39017 exception.
+- Enable HTTP/2 MITM support and add explicit target hostnames.
+- Add deliberate HTTPS self-check paths that return SR_MITM_OK_20261002_R2 through local mapping.
+
+Update the existing remote module and confirm that its name ends with R2. Keep HTTPS decryption enabled in the active configuration and use an installed, fully trusted certificate. Reconnect Shadowrocket before testing.
+
+Open these URLs in iPhone Safari with Shadowrocket connected:
+https://app-api.smzdm.com/__sr_mitm_check_20261002_r2
+https://cn-acs.m.cainiao.com/__sr_mitm_check_20261002_r2
+https://netflow-mtop.cainiao.com/__sr_mitm_check_20261002_r2
+
+Expected local response: SR_MITM_OK_20261002_R2
+This confirms Safari decryption and local mapping for that hostname. It does not independently prove that app traffic or remote response scripts are processed successfully.
+
+Static and synthetic checks do not replace on-device testing. Ad coverage varies with app versions and locally cached material.
+
+Sources:
+https://github.com/fmz200/wool_scripts/blob/5d5f63fcf98bc69d5f8f1b1bae6f86a01ee4bb97/Scripts/smzdm/Smzdm.js
+https://t.me/s/nobyda/1017
+https://github.com/privacy-protection-tools/anti-AD/blob/master/anti-ad-domains.txt
+https://github.com/LOWERTOP/Shadowrocket/wiki
+
+Derived fmz200 content: GPL-3.0; see LICENSE. Other upstream contributions retain their respective terms and attribution.
