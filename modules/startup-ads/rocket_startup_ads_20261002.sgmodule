@@ -1,5 +1,5 @@
-#!name=小火箭·开屏与弹窗更新 2026-10-02 R4 诊断版
-#!desc=R4 定向诊断：保留 R3 拦截规则，增加启动接口结构摘要及素材域解密。报告只在手机本地生成；尚未确认解决残余开屏广告。
+#!name=小火箭·开屏与弹窗更新 2026-10-02 R5 补充诊断版
+#!desc=R5：补充什么值得买和腾讯视频响应诊断；保留多种响应结构；拦截规则与R4相同，尚未确认消除残留开屏。
 #!system=ios
 #!author=wsnwuj；上游：ddgksf2013、fmz200、blackmatrix7、app2smile、Walvez、AWAvenue
 
@@ -184,8 +184,8 @@ USER-AGENT,QIYIVideo*StartAd*,REJECT
 ^https?:\/\/(?:[a-zA-Z0-9_.-]+\.cainiao\.com|(?:acs|guide-acs|acs4miniapp-inner)\.m\.taobao\.com)\/gw\/mtop\.cainiao\.(?:nbopen\.miniapp\.recommend\.cpc\.cn|nbmensa\.research\.researchservice\.acquire\.cn)(?:\/|\?|$) - reject-dict
 
 [Script]
-StartupDiag_R4_Report = type=http-request,pattern=^https?:\/\/app-api\.smzdm\.com(?::443)?\/__sr_diag_r4(?:\?[^#]*)?$,script-path=https://raw.githubusercontent.com/wsnwuj/Shadowrocket-Rules/a657e5ecc12908061c020c058a72022d03a8af53/modules/startup-ads/startup-diag-r4.js,timeout=10
-StartupDiag_R4_Response = type=http-response,requires-body=1,max-size=1048576,pattern=^https?:\/\/(?:app-api\.smzdm\.com(?::443)?\/util\/update\/?(?:\?|$)|api\.m\.jd\.com(?::443)?\/client\.action(?:\??$|\?(?:[^#]*&)?functionId=(?:xview2Config|readCustomSurfaceList|universalPreDownload)(?:&|$))|vv(?:6)?\.video\.qq\.com(?::443)?\/(?:diff|get)vmind(?:\?|$)|rdelivery\.qq\.com(?::443)?\/),script-path=https://raw.githubusercontent.com/wsnwuj/Shadowrocket-Rules/a657e5ecc12908061c020c058a72022d03a8af53/modules/startup-ads/startup-diag-r4.js,timeout=10
+StartupDiag_R5_Report = type=http-request,pattern=^https?:\/\/app-api\.smzdm\.com(?::443)?\/__sr_diag_r[45](?:\?[^#]*)?$,script-path=https://raw.githubusercontent.com/wsnwuj/Shadowrocket-Rules/518f8139b021504785ff1c6efe98ad692326cc00/modules/startup-ads/startup-diag-r5.js,timeout=10
+StartupDiag_R5_Response = type=http-response,requires-body=1,max-size=1048576,pattern=^https?:\/\/(?:app-api\.smzdm\.com(?::443)?\/util\/update\/?(?:\?|$)|common-api\.smzdm\.com(?::443)?\/ab\/config\/?(?:\?|$)|rdelivery\.qq\.com(?::443)?\/(?:v3\/config\/pull|v1\/sdkconfig\/get)\/?(?:\?|$)|vv(?:6)?\.video\.qq\.com(?::443)?\/(?:batchvinfo|(?:diff|get)vmind)\/?(?:\?|$)),script-path=https://raw.githubusercontent.com/wsnwuj/Shadowrocket-Rules/518f8139b021504785ff1c6efe98ad692326cc00/modules/startup-ads/startup-diag-r5.js,timeout=10
 京东_启动及浮层净化 = type=http-response,requires-body=1,max-size=-1,pattern=^https?:\/\/api\.m\.jd\.com\/client\.action\?(?:[^#]*&)?functionId=(start|deliverLayer|welcomeHome)(?:&|$),script-path=https://raw.githubusercontent.com/fmz200/wool_scripts/5d5f63fcf98bc69d5f8f1b1bae6f86a01ee4bb97/Scripts/jingdong/jingdong.js,timeout=20
 
 什么值得买_广告分发去广告 = type=http-response,requires-body=1,max-size=-1,pattern=^https?:\/\/.*\.zdmimg\.com\/cpm\/api\/v\d\/advert_distribution\/get_all_advertise,script-path=https://raw.githubusercontent.com/ddgksf2013/Scripts/314f61060a4c72c8a8b9f6b2ff457c8d35abbdac/smzdm_json.js,timeout=20
