@@ -1,5 +1,5 @@
-#!name=小火箭·开屏与弹窗更新 2026-10-02 R2
-#!desc=R2：补腾讯视频广告域；调整什么值得买开屏响应；补菜鸟netflow广告响应；启用HTTP/2解密兼容与本地自检。需实机复测。
+#!name=小火箭·开屏与弹窗更新 2026-10-02 R3
+#!desc=R3：什么值得买开屏接口改用本地拒绝空对象；补腾讯视频广告域与开屏素材域。需清理广告缓存并实机复测。
 #!system=ios
 #!author=wsnwuj；上游：ddgksf2013、fmz200、blackmatrix7、app2smile、Walvez、AWAvenue
 
@@ -7,6 +7,8 @@
 force-http-engine-hosts = %APPEND% api.m.jd.com,app-api.smzdm.com,api.smzdm.com,*.zdmimg.com,cn-acs.m.cainiao.com,netflow-mtop.cainiao.com,nbcps-mtop.cainiao.com,e2e-mtop.cainiao.com,longquan-mtop.cainiao.com,amdc.m.taobao.com,guide-acs.m.taobao.com,ad.12306.cn,home.umetrip.com,discardrp.umetrip.com,startup.umetrip.com,t7z.cupid.iqiyi.com,kjp.cupid.iqiyi.com,iface.iqiyi.com,act.vip.iqiyi.com,splashqqlive.gtimg.com,vv.video.qq.com,btrace.qq.com,mob.bz.mgtv.com,mobile.api.mgtv.com,mobile.da.mgtv.com,a.sinopecsales.com,ocrifs.ejoy.sinopec.com,api.zhihu.com,c.tieba.baidu.com,tiebac.baidu.com,tieba.baidu.com,baichuan.baidu.com,api.weibo.cn,api.weibo.com,mapi.weibo.cn,mapi.weibo.com,weibointl.api.weibo.cn,sdkapp.uve.weibo.com,wbapp.uve.weibo.com,preload-click.uve.weibo.com,preload-impression.uve.weibo.com,boot.biz.weibo.com,api.bilibili.com,app.bilibili.com,app.biliapi.net,upos-sz-static.bilivideo.com,acs.m.taobao.com,poplayer.template.alibaba.com,api.pinduoduo.com,api.yangkeduo.com,acs4miniapp-inner.m.taobao.com,homepage-api.smzdm.com,s-api.smzdm.com,*.cupid.iqiyi.com
 
 [Rule]
+DOMAIN,livep2.l.qq.com,REJECT
+DOMAIN,splashqqlive.gtimg.com,REJECT
 DOMAIN,c2.l.qq.com,REJECT
 DOMAIN,p2.l.qq.com,REJECT
 
@@ -119,6 +121,7 @@ DOMAIN,bootrealtime.uve.weibo.com,REJECT
 USER-AGENT,QIYIVideo*StartAd*,REJECT
 
 [URL Rewrite]
+^https?:\/\/app-api\.smzdm\.com(?::443)?\/util\/loading\/?(?:\?|$) - reject-dict
 ^https?:\/\/api\.m\.jd\.com\/client\.action\?(?:[^#]*&)?functionId=(homeAreaPop|home_launchConfig|lite_advertising|queryMaterialAdverts|smart_delivery_strategy)(?:&|$) - reject-dict
 
 ^https?:\/\/api\.smzdm\.com\/v\d+\/util\/loading(?:\?.*)?$ - reject-dict
@@ -183,7 +186,6 @@ USER-AGENT,QIYIVideo*StartAd*,REJECT
 [Script]
 京东_启动及浮层净化 = type=http-response,requires-body=1,max-size=-1,pattern=^https?:\/\/api\.m\.jd\.com\/client\.action\?(?:[^#]*&)?functionId=(start|deliverLayer|welcomeHome)(?:&|$),script-path=https://raw.githubusercontent.com/fmz200/wool_scripts/5d5f63fcf98bc69d5f8f1b1bae6f86a01ee4bb97/Scripts/jingdong/jingdong.js,timeout=20
 
-什么值得买_开屏去广告 = type=http-response,requires-body=1,max-size=-1,pattern=^https?:\/\/app-api\.smzdm\.com(?::443)?\/util\/loading\/?(?:\?|$),script-path=https://raw.githubusercontent.com/wsnwuj/Shadowrocket-Rules/ad01f746884f356fefe2e149dccd5170b07ef909/modules/startup-ads/startup-targeted-r2.js,timeout=20
 什么值得买_广告分发去广告 = type=http-response,requires-body=1,max-size=-1,pattern=^https?:\/\/.*\.zdmimg\.com\/cpm\/api\/v\d\/advert_distribution\/get_all_advertise,script-path=https://raw.githubusercontent.com/ddgksf2013/Scripts/314f61060a4c72c8a8b9f6b2ff457c8d35abbdac/smzdm_json.js,timeout=20
 
 菜鸟_amdc = type=http-response,requires-body=1,max-size=-1,pattern=^http:\/\/amdc\.m\.taobao\.com,script-path=https://raw.githubusercontent.com/ddgksf2013/Scripts/314f61060a4c72c8a8b9f6b2ff457c8d35abbdac/amdc.js,timeout=20
