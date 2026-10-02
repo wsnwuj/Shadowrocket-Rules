@@ -1,10 +1,9 @@
-#!name=腾讯视频 T2 · 已确认汽车广告素材补充
-#!desc=配合R7使用；保留T1的info4/info6拦截，并按素材标识阻止两段已确认汽车广告的重新下载。仅覆盖这些素材，无法清除已预加载广告。9.04.56实机效果待验证。
+#!name=腾讯视频 T2.1 · 汽车素材拦截与本地自检
+#!desc=配合R7；保留info4/info6拦截，按同样的两段汽车素材标识返回本地410响应。自检地址http://omex.tc.qq.com/__sr_t2_check。无法清除已预加载素材，其他广告仍需排查。
 #!homepage=https://github.com/wsnwuj/Shadowrocket-Rules
 
-# info4/info6 reference: https://github.com/fmz200/wool_scripts/blob/main/Loon/rule/TencentVideo.list
-# Media identities below are public, unsigned creative assets, not account tokens.
-# Match the two confirmed creatives and their format variants; other media is unaffected.
+# info4/info6 source: https://github.com/fmz200/wool_scripts/blob/main/Loon/rule/TencentVideo.list
+# Only two confirmed creative identities and local check endpoints are handled.
 
 [General]
 force-http-engine-hosts = %APPEND% omex.tc.qq.com
@@ -12,7 +11,9 @@ force-http-engine-hosts = %APPEND% omex.tc.qq.com
 [Rule]
 DOMAIN,info4.video.qq.com,REJECT
 DOMAIN,info6.video.qq.com,REJECT
-URL-REGEX,^https?://omex\.tc\.qq\.com(?::(?:80|443))?/gzc_1000127_(?:0b53umccyaae6iaf3n46tzvnfi6dfsraik2a|0b53bybvuaadxiahgz4wqfvnkdwdlihqgxka)\.f\d+\.mp4(?:\?[^#]*)?$,REJECT
+
+[Script]
+Tencent_T2_1_Creative_Check = type=http-request,pattern=^https?:\/\/omex\.tc\.qq\.com(?::(?:80|443))?\/(?:__sr_t2_(?:check|status)|gzc_1000127_(?:0b53umccyaae6iaf3n46tzvnfi6dfsraik2a|0b53bybvuaadxiahgz4wqfvnkdwdlihqgxka)\.f\d+\.mp4)(?:\?[^#]*)?$,script-path=https://raw.githubusercontent.com/wsnwuj/Shadowrocket-Rules/2d62a6a8d50a1b74dbe48020e47cf3676be85b93/modules/startup-ads/tencent-creative-t2-1.js,timeout=10
 
 [MITM]
 hostname = %APPEND% omex.tc.qq.com
