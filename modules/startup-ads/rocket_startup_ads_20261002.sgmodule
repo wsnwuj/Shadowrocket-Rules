@@ -1,5 +1,5 @@
-#!name=小火箭·开屏与弹窗更新 2026-10-02 R6 定向测试版
-#!desc=R6：什么值得买开屏改为响应内禁用广告；腾讯补充diff/getvmind空响应。需实机验证，若影响正常视频请回退R5。
+#!name=小火箭·开屏与弹窗更新 2026-10-02 R7 值得买测试版
+#!desc=R7：什么值得买开屏响应改为空广告列表，保留响应状态与其他字段；腾讯处理沿用R6。实机效果待验证。
 #!system=ios
 #!author=wsnwuj；上游：ddgksf2013、fmz200、blackmatrix7、app2smile、Walvez、AWAvenue
 
@@ -181,9 +181,9 @@ USER-AGENT,QIYIVideo*StartAd*,REJECT
 ^https?:\/\/(?:[a-zA-Z0-9_.-]+\.cainiao\.com|(?:acs|guide-acs|acs4miniapp-inner)\.m\.taobao\.com)\/gw\/mtop\.cainiao\.(?:nbopen\.miniapp\.recommend\.cpc\.cn|nbmensa\.research\.researchservice\.acquire\.cn)(?:\/|\?|$) - reject-dict
 
 [Script]
-Startup_R6_Report = type=http-request,pattern=^https?:\/\/app-api\.smzdm\.com(?::443)?\/__sr_diag_r[456](?:\?[^#]*)?$,script-path=https://raw.githubusercontent.com/wsnwuj/Shadowrocket-Rules/7689ed6201bc10b57ebfda5db024782a7531f3d0/modules/startup-ads/startup-targeted-r6.js,timeout=10
-SMZDM_R6_Loading = type=http-response,requires-body=1,max-size=1048576,pattern=^https?:\/\/(?:app-api\.smzdm\.com(?::443)?\/util\/loading|api\.smzdm\.com(?::443)?\/v\d+\/util\/loading)\/?(?:\?[^#]*)?$,script-path=https://raw.githubusercontent.com/wsnwuj/Shadowrocket-Rules/7689ed6201bc10b57ebfda5db024782a7531f3d0/modules/startup-ads/startup-targeted-r6.js,timeout=10
-Tencent_R6_Vmind = type=http-request,pattern=^https?:\/\/vv(?:6)?\.video\.qq\.com(?::443)?\/(?:diff|get)vmind\/?(?:\?[^#]*)?$,script-path=https://raw.githubusercontent.com/wsnwuj/Shadowrocket-Rules/7689ed6201bc10b57ebfda5db024782a7531f3d0/modules/startup-ads/startup-targeted-r6.js,timeout=10
+Startup_R7_Report = type=http-request,pattern=^https?:\/\/app-api\.smzdm\.com(?::443)?\/__sr_diag_r[4567](?:\?[^#]*)?$,script-path=https://raw.githubusercontent.com/wsnwuj/Shadowrocket-Rules/6b85a43b64cec7e32e2325c535b0abecea4898d7/modules/startup-ads/startup-targeted-r7.js,timeout=10
+SMZDM_R7_Loading = type=http-response,requires-body=1,max-size=1048576,pattern=^https?:\/\/(?:app-api\.smzdm\.com(?::443)?\/util\/loading|api\.smzdm\.com(?::443)?\/v\d+\/util\/loading)\/?(?:\?[^#]*)?$,script-path=https://raw.githubusercontent.com/wsnwuj/Shadowrocket-Rules/6b85a43b64cec7e32e2325c535b0abecea4898d7/modules/startup-ads/startup-targeted-r7.js,timeout=10
+Tencent_R7_Vmind = type=http-request,pattern=^https?:\/\/vv(?:6)?\.video\.qq\.com(?::443)?\/(?:diff|get)vmind\/?(?:\?[^#]*)?$,script-path=https://raw.githubusercontent.com/wsnwuj/Shadowrocket-Rules/6b85a43b64cec7e32e2325c535b0abecea4898d7/modules/startup-ads/startup-targeted-r7.js,timeout=10
 京东_启动及浮层净化 = type=http-response,requires-body=1,max-size=-1,pattern=^https?:\/\/api\.m\.jd\.com\/client\.action\?(?:[^#]*&)?functionId=(start|deliverLayer|welcomeHome)(?:&|$),script-path=https://raw.githubusercontent.com/fmz200/wool_scripts/5d5f63fcf98bc69d5f8f1b1bae6f86a01ee4bb97/Scripts/jingdong/jingdong.js,timeout=20
 
 什么值得买_广告分发去广告 = type=http-response,requires-body=1,max-size=-1,pattern=^https?:\/\/.*\.zdmimg\.com\/cpm\/api\/v\d\/advert_distribution\/get_all_advertise,script-path=https://raw.githubusercontent.com/ddgksf2013/Scripts/314f61060a4c72c8a8b9f6b2ff457c8d35abbdac/smzdm_json.js,timeout=20
