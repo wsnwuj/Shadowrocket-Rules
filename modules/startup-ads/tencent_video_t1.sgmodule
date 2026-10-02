@@ -1,19 +1,20 @@
-#!name=腾讯视频 T2.1 · 汽车素材拦截与本地自检
-#!desc=配合R7；保留info4/info6拦截，按同样的两段汽车素材标识返回本地410响应。自检地址http://omex.tc.qq.com/__sr_t2_check。无法清除已预加载素材，其他广告仍需排查。
+#!name=腾讯视频 T2.2 · 已确认汽车广告分片补充
+#!desc=配合R7；保留原两段汽车素材拦截，补ltsyz.gtimg.com上同素材的TS分片及MP4变体。只按已确认素材标识匹配。自检http://omex.tc.qq.com/__sr_t2_check；不能清除已保存广告，开屏效果及正片播放需实测。
 #!homepage=https://github.com/wsnwuj/Shadowrocket-Rules
 
+# Two observed CDN hosts; two visually confirmed creative identities only.
+# Generic path prefixes below do not contain captured signatures or device/query values.
 # info4/info6 source: https://github.com/fmz200/wool_scripts/blob/main/Loon/rule/TencentVideo.list
-# Only two confirmed creative identities and local check endpoints are handled.
 
 [General]
-force-http-engine-hosts = %APPEND% omex.tc.qq.com
+force-http-engine-hosts = %APPEND% omex.tc.qq.com,ltsyz.gtimg.com
 
 [Rule]
 DOMAIN,info4.video.qq.com,REJECT
 DOMAIN,info6.video.qq.com,REJECT
 
 [Script]
-Tencent_T2_1_Creative_Check = type=http-request,pattern=^https?:\/\/omex\.tc\.qq\.com(?::(?:80|443))?\/(?:__sr_t2_(?:check|status)|gzc_1000127_(?:0b53umccyaae6iaf3n46tzvnfi6dfsraik2a|0b53bybvuaadxiahgz4wqfvnkdwdlihqgxka)\.f\d+\.mp4)(?:\?[^#]*)?$,script-path=https://raw.githubusercontent.com/wsnwuj/Shadowrocket-Rules/2d62a6a8d50a1b74dbe48020e47cf3676be85b93/modules/startup-ads/tencent-creative-t2-1.js,timeout=10
+Tencent_T2_2_Creative_Check = type=http-request,pattern=^https?:\/\/(?:(?:omex\.tc\.qq\.com|ltsyz\.gtimg\.com)(?::(?:80|443))?\/(?:[^/?#]+\/)*(?:\d+_)?gzc_1000127_(?:0b53umccyaae6iaf3n46tzvnfi6dfsraik2a|0b53bybvuaadxiahgz4wqfvnkdwdlihqgxka)\.f\d+(?:\.\d+)?\.(?:mp4|ts)(?:\?[^#]*)?$|omex\.tc\.qq\.com(?::(?:80|443))?\/__sr_t2_(?:check|status)(?:\?[^#]*)?$),script-path=https://raw.githubusercontent.com/wsnwuj/Shadowrocket-Rules/bdb3d9ffbfe6cd3165a6aa9c9170eca76592e897/modules/startup-ads/tencent-creative-t2-2.js,timeout=10
 
 [MITM]
-hostname = %APPEND% omex.tc.qq.com
+hostname = %APPEND% omex.tc.qq.com,ltsyz.gtimg.com
