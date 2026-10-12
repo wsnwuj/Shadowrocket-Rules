@@ -1,5 +1,5 @@
 #!name=腾讯视频 T2.2.1 · 汽车广告分片与自检修正
-#!desc=配合R7；保持T2.2的两段已确认汽车素材匹配范围。自检兼容HTTP/HTTPS并提供直接验证链接。自检https://omex.tc.qq.com/__sr_t2_check；开屏效果及正片播放仍需实测。
+#!desc=配合R7或R8；保持T2.2的两段已确认汽车素材匹配范围。自检兼容HTTP/HTTPS。自检https://omex.tc.qq.com/__sr_t2_check；残留控件尚未解决｜最后更新：2026-10-12 09:46:43（北京时间）
 #!homepage=https://github.com/wsnwuj/Shadowrocket-Rules
 
 # Two observed CDN hosts; two visually confirmed creative identities only.

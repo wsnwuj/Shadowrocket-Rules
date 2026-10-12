@@ -1,5 +1,5 @@
-#!name=小火箭·开屏与弹窗更新 2026-10-02 R7 值得买测试版
-#!desc=R7：什么值得买开屏响应改为空广告列表，保留响应状态与其他字段；腾讯处理沿用R6。实机效果待验证。
+#!name=小火箭·开屏与弹窗更新 2026-10-12 R8
+#!desc=R8：补充微博广告监测域名；沿用R7值得买响应净化和腾讯处理。新增项效果待手机确认｜最后更新：2026-10-12 09:46:43（北京时间）
 #!system=ios
 #!author=wsnwuj；上游：ddgksf2013、fmz200、blackmatrix7、app2smile、Walvez、AWAvenue
 
@@ -54,6 +54,12 @@ DOMAIN,bootpreload.uve.weibo.com,REJECT
 DOMAIN,sdkapp.uve.weibo.com,REJECT
 DOMAIN,wbapp.uve.weibo.com,REJECT
 DOMAIN,adstrategy.biz.weibo.com,REJECT
+# 微博广告监测：hostsVN 精确列表与 fmz200 微博规则共同支持。
+# https://github.com/bigdargon/hostsVN/blob/e665d1bf82316ef3eeebdc7b44b6500ec385a076/option/domain.txt
+DOMAIN,sdkaction.biz.weibo.com,REJECT
+DOMAIN,sdkclick.biz.weibo.com,REJECT
+DOMAIN,sdkmonitor.biz.weibo.com,REJECT
+DOMAIN,vs.biz.weibo.com,REJECT
 
 DOMAIN,rdeliver.qq.com,REJECT
 DOMAIN,pgdt.gtimg.cn,REJECT
