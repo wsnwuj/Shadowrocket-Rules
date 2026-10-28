@@ -1,32 +1,26 @@
-#!name=小火箭·开屏与弹窗更新 2026-10-12 R8
-#!desc=R8：补充微博广告监测域名；沿用R7值得买响应净化和腾讯处理。新增项效果待手机确认｜最后更新：2026-10-12 09:46:43（北京时间）
+#!name=小火箭·去广告 R9 轻量版（域名拦截）
+#!desc=移除脚本、响应改写、强制HTTP引擎及新增解密主机；仅保留原域名规则，部分开屏广告可能恢复｜最后更新：2026-10-28 15:40:26（北京时间）
 #!system=ios
-#!author=wsnwuj；上游：ddgksf2013、fmz200、blackmatrix7、app2smile、Walvez、AWAvenue
+#!author=wsnwuj；基于原R8模块精简
 
-[General]
-force-http-engine-hosts = %APPEND% api.m.jd.com,app-api.smzdm.com,api.smzdm.com,*.zdmimg.com,cn-acs.m.cainiao.com,netflow-mtop.cainiao.com,nbcps-mtop.cainiao.com,e2e-mtop.cainiao.com,longquan-mtop.cainiao.com,amdc.m.taobao.com,guide-acs.m.taobao.com,ad.12306.cn,home.umetrip.com,discardrp.umetrip.com,startup.umetrip.com,t7z.cupid.iqiyi.com,kjp.cupid.iqiyi.com,iface.iqiyi.com,act.vip.iqiyi.com,splashqqlive.gtimg.com,vv.video.qq.com,btrace.qq.com,mob.bz.mgtv.com,mobile.api.mgtv.com,mobile.da.mgtv.com,a.sinopecsales.com,ocrifs.ejoy.sinopec.com,api.zhihu.com,c.tieba.baidu.com,tiebac.baidu.com,tieba.baidu.com,baichuan.baidu.com,api.weibo.cn,api.weibo.com,mapi.weibo.cn,mapi.weibo.com,weibointl.api.weibo.cn,sdkapp.uve.weibo.com,wbapp.uve.weibo.com,preload-click.uve.weibo.com,preload-impression.uve.weibo.com,boot.biz.weibo.com,api.bilibili.com,app.bilibili.com,app.biliapi.net,upos-sz-static.bilivideo.com,acs.m.taobao.com,poplayer.template.alibaba.com,api.pinduoduo.com,api.yangkeduo.com,acs4miniapp-inner.m.taobao.com,homepage-api.smzdm.com,s-api.smzdm.com,*.cupid.iqiyi.com,eimg.smzdm.com,qny.smzdm.com,qneimg.smzdm.com,common-api.smzdm.com,m.360buyimg.com,m15.360buyimg.com,vv6.video.qq.com,rdelivery.qq.com
-
+# 仅域名级拦截：不新增广告域名，不扩大共享CDN屏蔽范围。
+# 与旧版R8相比，依赖HTTPS路径或响应内容的广告净化不再执行。
 [Rule]
 DOMAIN,livep2.l.qq.com,REJECT
 DOMAIN,splashqqlive.gtimg.com,REJECT
 DOMAIN,c2.l.qq.com,REJECT
 DOMAIN,p2.l.qq.com,REJECT
-
 DOMAIN-SUFFIX,oaistatic.com,PROXY
 DOMAIN-SUFFIX,oaiusercontent.com,PROXY
 DOMAIN-SUFFIX,chatgpt.com,PROXY
 DOMAIN-SUFFIX,openai.com,PROXY
 DOMAIN-SUFFIX,chatgpt.livekit.cloud,PROXY
-
 DOMAIN,ad.12306.cn,DIRECT
-
 DOMAIN-SUFFIX,jutuiad.cn,REJECT
-
 DOMAIN-SUFFIX,gdt.qq.com,REJECT
 DOMAIN-SUFFIX,ugdtimg.com,REJECT
 DOMAIN,adsmind.gdtimg.com,REJECT
 DOMAIN,sdkquic.e.qq.com,REJECT
-
 DOMAIN-SUFFIX,ubixioe.com,REJECT
 DOMAIN-SUFFIX,1rtb.net,REJECT
 DOMAIN,imp.voiceads.cn,REJECT
@@ -34,7 +28,6 @@ DOMAIN,api-access.pangolin-sdk-toutiao.com,REJECT
 DOMAIN,api-access.pangolin-sdk-toutiao1.com,REJECT
 DOMAIN,api-access.pangolin-sdk-toutiao-b.com,REJECT
 DOMAIN-SUFFIX,pglstatp-toutiao.com,REJECT
-
 DOMAIN-SUFFIX,sigmob.cn,REJECT
 DOMAIN-SUFFIX,beizi.biz,REJECT
 DOMAIN-SUFFIX,yunxish.com,REJECT
@@ -42,25 +35,20 @@ DOMAIN-SUFFIX,tuia.cn,REJECT
 DOMAIN,mobads.baidu.com,REJECT
 DOMAIN,mobads-logs.baidu.com,REJECT
 DOMAIN,sdk.zhangyuyidong.cn,REJECT
-
 DOMAIN,df.tanx.com,REJECT
 DOMAIN,ef-dongfeng.tanx.com,REJECT
 DOMAIN,et.tanx.com,REJECT
 DOMAIN,rdstat.tanx.com,REJECT
 DOMAIN-SUFFIX,fancydsp.com,REJECT
 DOMAIN-SUFFIX,fancyapi.com,REJECT
-
 DOMAIN,bootpreload.uve.weibo.com,REJECT
 DOMAIN,sdkapp.uve.weibo.com,REJECT
 DOMAIN,wbapp.uve.weibo.com,REJECT
 DOMAIN,adstrategy.biz.weibo.com,REJECT
-# 微博广告监测：hostsVN 精确列表与 fmz200 微博规则共同支持。
-# https://github.com/bigdargon/hostsVN/blob/e665d1bf82316ef3eeebdc7b44b6500ec385a076/option/domain.txt
 DOMAIN,sdkaction.biz.weibo.com,REJECT
 DOMAIN,sdkclick.biz.weibo.com,REJECT
 DOMAIN,sdkmonitor.biz.weibo.com,REJECT
 DOMAIN,vs.biz.weibo.com,REJECT
-
 DOMAIN,rdeliver.qq.com,REJECT
 DOMAIN,pgdt.gtimg.cn,REJECT
 DOMAIN,appcfg.v.qq.com,REJECT
@@ -68,7 +56,6 @@ DOMAIN,tangram.e.qq.com,REJECT
 DOMAIN,us.l.qq.com,REJECT
 DOMAIN,sdk.e.qq.com,REJECT
 DOMAIN,p.l.qq.com,REJECT
-
 DOMAIN-SUFFIX,gameley.com,REJECT
 DOMAIN-SUFFIX,tianmu.mobi,REJECT
 DOMAIN-SUFFIX,admobile.top,REJECT
@@ -84,7 +71,6 @@ DOMAIN,switch-cdn.vgjump.com,REJECT
 DOMAIN-SUFFIX,adtrack.enlightent.cn,REJECT
 DOMAIN,nb-ssp.oss-cn-beijing.aliyuncs.com,REJECT
 DOMAIN,afdconf.baidu.com,REJECT
-
 DOMAIN-SUFFIX,pangolin-sdk-toutiao.com,REJECT
 DOMAIN-SUFFIX,tobidad.cn,REJECT
 DOMAIN-SUFFIX,etoolads.cn,REJECT
@@ -110,117 +96,17 @@ DOMAIN,hunantv.m.cn.miaozhen.com,REJECT
 DOMAIN,tytx.m.cn.miaozhen.com,REJECT
 DOMAIN,iqiyi-mipdx.cn.miaozhen.com,REJECT
 DOMAIN,g.cn.miaozhen.com,REJECT
-
 DOMAIN,sdk.adhuanxiao.com,REJECT
 DOMAIN,yumao.puata.info,REJECT
 DOMAIN,iosid.zhangyuyidong.cn,REJECT
 DOMAIN,sdktmp.hubcloud.com.cn,REJECT
 DOMAIN,log-api.pangolin-sdk-toutiao-b.com,REJECT
-
 DOMAIN,ys.da.mgtv.com,REJECT
 DOMAIN,v2.da.mgtv.com,REJECT
 DOMAIN,layer.bz.mgtv.com,REJECT
 DOMAIN,dflow.bz.mgtv.com,REJECT
-
 DOMAIN,bootrealtime.uve.weibo.com,REJECT
 
-USER-AGENT,QIYIVideo*StartAd*,REJECT
-
-[URL Rewrite]
-^https?:\/\/api\.m\.jd\.com\/client\.action\?(?:[^#]*&)?functionId=(homeAreaPop|home_launchConfig|lite_advertising|queryMaterialAdverts|smart_delivery_strategy)(?:&|$) - reject-dict
-
-^https?:\/\/s\d+\.zdmimg\.com\/www\/api\/v\d+\/api\/thirdAd\.php - reject
-
-^https?:\/\/cn-acs\.m\.cainiao\.com\/gw\/mtop\.cainiao\.guoguo\.nbnetflow\.ads\.(show|mshow)\.cn(?:\/|\?).* - reject-200
-^https?:\/\/(?:[a-zA-Z0-9_.-]+\.cainiao\.com|(?:acs|guide-acs|acs4miniapp-inner)\.m\.taobao\.com)\/gw\/mtop\.cainiao\.guoguo\.nbnetflow\.ads\.(?!.*_home) - reject-200
-^https?:\/\/(?:[a-zA-Z0-9_.-]+\.cainiao\.com|(?:acs|guide-acs|acs4miniapp-inner)\.m\.taobao\.com)\/gw\/mtop\.cainiao\.nbcps\.presentation\.fetch\.cn - reject-200
-^https?:\/\/(?:[a-zA-Z0-9_.-]+\.cainiao\.com|(?:acs|guide-acs|acs4miniapp-inner)\.m\.taobao\.com)\/gw\/mtop\.cainiao\.app\.home\.v\d+\.bottom\.area - reject-200
-^https?:\/\/longquan-mtop\.cainiao\.com\/gw\/mtop\.com\.cainiao\.longquan\.place\.getpageresourcecontent\.cn - reject-200
-
-^https?:\/\/ad\.12306\.cn\/ad\/mon\/mzc(?:\?.*)?$ - reject
-
-^https?:\/\/(discardrp|startup)\.umetrip\.com\/gateway\/api\/umetrip\/native(?:\?.*)?$ - reject-200
-
-^https?:\/\/sdk\.1rtb\.net\/sdk\/req_ad(?:\?.*)?$ - reject-dict
-^https?:\/\/sdklog\.zhangyuyidong\.cn\/sdk\/lurl(?:\?.*)?$ - reject-200
-
-^https?:\/\/iface\.iqiyi\.com\/api\/getNewAdInfo(?:\?|$) - reject-dict
-^https?:\/\/act\.vip\.iqiyi\.com\/interact\/api\/(show\.do|v2\/show)(?:\?|$) - reject-dict
-
-^https?:\/\/splashqqlive\.gtimg\.com\/website\/\d{6} - reject-img
-^https?:\/\/wa\.gtimg\.com\/adxcdn\/ - reject
-^https?:\/\/pgdt\.gtimg\.cn\/ - reject-img
-^https?:\/\/btrace\.qq\.com(?:\/|$) - reject-200
-
-^https?:\/\/mobile\.da\.mgtv\.com\/json\/app\/bdboot(?:\?|$) - reject-dict
-^https?:\/\/mobile\.da\.mgtv\.com\/app\/el(?:\?|$) - reject-200
-^https?:\/\/mobile\.da\.mgtv\.com\/m\/page(?:\?|$) - reject-200
-^https?:\/\/mobile\.da\.mgtv\.com\/creative\/list(?:\?|$) - reject-dict
-^https?:\/\/mob\.bz\.mgtv\.com\/odin\/c1\/channel\/ads(?:\?|$) - reject-dict
-^https?:\/\/mobile\.api\.mgtv\.com\/mobile\/config\?_support - reject-dict
-^https?:\/\/d\.da\.mgtv\.com\/info(?:\?.*)?$ - reject-dict
-
-^https?:\/\/a\.sinopecsales\.com\/app\/cms(?:\?.*)?$ - reject-dict
-^https?:\/\/ocrifs\.ejoy\.sinopec\.com\/advertitfs\/advert\/findAdvertInfo(?:\?.*)?$ - reject-dict
-
-^https?:\/\/api\.zhihu\.com\/commercial_api\/(launch_v2|real_time_launch_v2)(?:\?.*)?$ - reject-dict
-^https?:\/\/api\.zhihu\.com\/(launch|real_time)(?:\?.*)?$ - reject-dict
-
-^https?:\/\/c\.tieba\.baidu\.com\/c\/s\/splashSchedule(?:\?.*)?$ - reject
-^https?:\/\/tiebac\.baidu\.com\/c\/f\/ad\/getSplashAd(?:\?.*)?$ - reject-dict
-^https?:\/\/tiebac\.baidu\.com\/c\/s\/adLog(?:\?.*)?$ - reject-200
-^https?:\/\/baichuan\.baidu\.com\/rs\/adpmobile\/launch(?:\?.*)?$ - reject
-
-^https?:\/\/api\.weibo\.cn\/2\/client\/launch(?:\?.*)?$ - reject-dict
-^https?:\/\/api\.weibo\.cn\/2\/ad\/preload(?:\?.*)?$ - reject-dict
-^https?:\/\/(preload-click|preload-impression)\.uve\.weibo\.com\/(interface\/wbpullad\/wbpullad_click\.php|wbapplua\/get_wbpullad_log\.lua) - reject
-
-^https?:\/\/api\.bilibili\.com\/x\/vip\/ads\/material\/report(?:\?.*)?$ - reject-200
-^https?:\/\/upos-sz-static\.bilivideo\.com\/ssaxcode\/[^?#]+-1-SPLASH(?:\.(?:mp4|m4v|mov|webm))?(?:\?[^#]*)?$ - reject
-
-^https?:\/\/acs\.m\.taobao\.com\/gw\/mtop\.alibaba\.advertisementservice\.getadv(?:\/|\?|$) - reject-dict
-^https?:\/\/api\.(pinduoduo|yangkeduo)\.com\/api\/cappuccino\/splash(?:\/|\?|$) - reject-200
-^https?:\/\/api\.pinduoduo\.com\/api\/aquarius\/hungary\/global\/homepage\? - reject-dict
-^https?:\/\/m?api\.weibo\.c(n|om)\/\d\/push\/daily(?:\?|$) - reject-dict
-
-^https?:\/\/(guide-acs|acs4miniapp-inner)\.m\.taobao\.com\/gw\/mtop\.cainiao\.guoguo\.nbnetflow\.ads\. - reject-200
-^https?:\/\/(?:[a-zA-Z0-9_.-]+\.cainiao\.com|(?:acs|guide-acs|acs4miniapp-inner)\.m\.taobao\.com)\/gw\/mtop\.cainiao\.(?:nbopen\.miniapp\.recommend\.cpc\.cn|nbmensa\.research\.researchservice\.acquire\.cn)(?:\/|\?|$) - reject-dict
-
-[Script]
-Startup_R7_Report = type=http-request,pattern=^https?:\/\/app-api\.smzdm\.com(?::443)?\/__sr_diag_r[4567](?:\?[^#]*)?$,script-path=https://raw.githubusercontent.com/wsnwuj/Shadowrocket-Rules/6b85a43b64cec7e32e2325c535b0abecea4898d7/modules/startup-ads/startup-targeted-r7.js,timeout=10
-SMZDM_R7_Loading = type=http-response,requires-body=1,max-size=1048576,pattern=^https?:\/\/(?:app-api\.smzdm\.com(?::443)?\/util\/loading|api\.smzdm\.com(?::443)?\/v\d+\/util\/loading)\/?(?:\?[^#]*)?$,script-path=https://raw.githubusercontent.com/wsnwuj/Shadowrocket-Rules/6b85a43b64cec7e32e2325c535b0abecea4898d7/modules/startup-ads/startup-targeted-r7.js,timeout=10
-Tencent_R7_Vmind = type=http-request,pattern=^https?:\/\/vv(?:6)?\.video\.qq\.com(?::443)?\/(?:diff|get)vmind\/?(?:\?[^#]*)?$,script-path=https://raw.githubusercontent.com/wsnwuj/Shadowrocket-Rules/6b85a43b64cec7e32e2325c535b0abecea4898d7/modules/startup-ads/startup-targeted-r7.js,timeout=10
-京东_启动及浮层净化 = type=http-response,requires-body=1,max-size=-1,pattern=^https?:\/\/api\.m\.jd\.com\/client\.action\?(?:[^#]*&)?functionId=(start|deliverLayer|welcomeHome)(?:&|$),script-path=https://raw.githubusercontent.com/fmz200/wool_scripts/5d5f63fcf98bc69d5f8f1b1bae6f86a01ee4bb97/Scripts/jingdong/jingdong.js,timeout=20
-
-什么值得买_广告分发去广告 = type=http-response,requires-body=1,max-size=-1,pattern=^https?:\/\/.*\.zdmimg\.com\/cpm\/api\/v\d\/advert_distribution\/get_all_advertise,script-path=https://raw.githubusercontent.com/ddgksf2013/Scripts/314f61060a4c72c8a8b9f6b2ff457c8d35abbdac/smzdm_json.js,timeout=20
-
-菜鸟_amdc = type=http-response,requires-body=1,max-size=-1,pattern=^http:\/\/amdc\.m\.taobao\.com,script-path=https://raw.githubusercontent.com/ddgksf2013/Scripts/314f61060a4c72c8a8b9f6b2ff457c8d35abbdac/amdc.js,timeout=20
-菜鸟_响应去推广 = type=http-response,requires-body=1,max-size=-1,pattern=^https?:\/\/(?:[a-zA-Z0-9_.-]+\.cainiao\.com|(?:acs|guide-acs|acs4miniapp-inner)\.m\.taobao\.com)\/gw\/mtop\.cainiao\.(app\.e2e\.engine\.page\.fetch|nbpresentation\.homepage\.merge\.get\.cn|nbpresentation\.protocol\.homepage\.get\.cn|adkeyword),script-path=https://raw.githubusercontent.com/ddgksf2013/Scripts/314f61060a4c72c8a8b9f6b2ff457c8d35abbdac/cainiao_json.js,timeout=20
-
-铁路12306_开屏去广告 = type=http-response,requires-body=1,max-size=-1,pattern=^https?:\/\/ad\.12306\.cn\/ad\/ser\/getAdList(?:\?.*)?$,script-path=https://raw.githubusercontent.com/ddgksf2013/Scripts/314f61060a4c72c8a8b9f6b2ff457c8d35abbdac/12306.js,timeout=20
-
-航旅纵横Pro_开屏去广告 = type=http-response,requires-body=1,max-size=-1,pattern=^https?:\/\/(114\.115\.217\.129|home\.umetrip\.com)\/gateway\/api\/umetrip\/native(?:\?.*)?$,script-path=https://raw.githubusercontent.com/fmz200/wool_scripts/5d5f63fcf98bc69d5f8f1b1bae6f86a01ee4bb97/Scripts/umetrip/umetrip_ads.js,timeout=20
-
-爱奇艺_开屏去广告 = type=http-response,requires-body=1,max-size=-1,pattern=^https?:\/\/[\w.-]+\.cupid\.iqiyi\.com\/mixer\?,script-path=https://raw.githubusercontent.com/ddgksf2013/Scripts/314f61060a4c72c8a8b9f6b2ff457c8d35abbdac/iqiyi_open_ads.js,timeout=20
-
-百度贴吧_JSON去广告 = type=http-response,requires-body=1,max-size=-1,pattern=^https?:\/\/(tiebac|c\.tieba)\.baidu\.com\/(c\/(s\/sync|f\/(ad\/getSplashAd|frs\/(page|threadlist|generalTabList)|pb\/(pic)?page|excellent\/personalized))$|tiebaads\/commonbatch\?),script-path=https://raw.githubusercontent.com/app2smile/rules/df6366a7024e0b3f0aa3510c5b791eea6f3cba89/js/tieba-json.js,timeout=20
-百度贴吧_PROTO去广告 = type=http-response,requires-body=1,binary-body-mode=1,max-size=-1,pattern=^https?:\/\/(tiebac|c\.tieba)\.baidu\.com\/c\/(b\/ad\/adBid|f\/(frs\/(page|threadlist|generalTabList)|ad\/getFeedAd|pb\/page|excellent\/personalized))\?cmd,script-path=https://raw.githubusercontent.com/app2smile/rules/df6366a7024e0b3f0aa3510c5b791eea6f3cba89/js/tieba-proto.js,timeout=20
-
-微博_开屏响应去广告 = type=http-response,requires-body=1,max-size=-1,pattern=^https?:\/\/(boot.*weibo\.com\/v\d\/ad\/(preload|realtime)|(sdkapp|wbapp)\.uve\.weibo\.com\/),script-path=https://raw.githubusercontent.com/ddgksf2013/Scripts/314f61060a4c72c8a8b9f6b2ff457c8d35abbdac/weibo_json.js,timeout=20
-
-哔哩哔哩_开屏去广告 = type=http-response,requires-body=1,max-size=-1,pattern=^https?:\/\/app\.bili(bili\.com|api\.net)\/x\/v2\/splash\/(brand\/list|event\/list2?|list|show)(?:\?|$),script-path=https://raw.githubusercontent.com/Walvez/surge-startup-ads/d50d33cbd187f68778d8ca0b977c09f12cc23983/scripts/bilibili-splash-ads.js,timeout=20
-
-淘宝_开屏 = type=http-response,requires-body=1,max-size=-1,pattern=^https:\/\/guide-acs\.m\.taobao\.com\/gw\/mtop\.taobao\.(cloudvideo\.video\.query|wireless\.home\.splash\.awesome\.get),script-path=https://raw.githubusercontent.com/fmz200/wool_scripts/5d5f63fcf98bc69d5f8f1b1bae6f86a01ee4bb97/Scripts/myBlockAds.js,timeout=20
-淘宝_活动弹层 = type=http-response,requires-body=1,max-size=-1,pattern=^https:\/\/poplayer\.template\.alibaba\.com\/\w+\.json,script-path=https://raw.githubusercontent.com/fmz200/wool_scripts/5d5f63fcf98bc69d5f8f1b1bae6f86a01ee4bb97/Scripts/myBlockAds.js,timeout=20
-
-什么值得买_首页推广 = type=http-response,requires-body=1,max-size=-1,pattern=^https?:\/\/homepage-api\.smzdm\.com\/v3\/home(?:\?|$),script-path=https://raw.githubusercontent.com/ddgksf2013/Scripts/314f61060a4c72c8a8b9f6b2ff457c8d35abbdac/smzdm_json.js,timeout=20
-什么值得买_红包标签 = type=http-response,requires-body=1,max-size=-1,pattern=^https?:\/\/s-api\.smzdm\.com\/sou\/filter\/tags\/hot_tags(?:\?|$),script-path=https://raw.githubusercontent.com/ddgksf2013/Scripts/314f61060a4c72c8a8b9f6b2ff457c8d35abbdac/smzdm_json.js,timeout=20
-
-菜鸟_开屏广告配置 = type=http-response,requires-body=1,max-size=-1,pattern=^https?:\/\/netflow-mtop\.cainiao\.com(?::443)?\/gw\/mtop\.cainiao\.guoguo\.nbnetflow\.ads\.,script-path=https://raw.githubusercontent.com/wsnwuj/Shadowrocket-Rules/ad01f746884f356fefe2e149dccd5170b07ef909/modules/startup-ads/startup-targeted-r2.js,timeout=20
-
-[Map Local]
-^https:\/\/(app-api\.smzdm\.com|cn-acs\.m\.cainiao\.com|netflow-mtop\.cainiao\.com)(?::443)?\/__sr_mitm_check_20261002_r2(?:\?[^#]*)?$ data-type=text data="SR_MITM_OK_20261002_R2" status-code=200 header="Content-Type:text/plain;charset=utf-8"
-
+# 仅保留原OpenAI解密排除项，不添加任何解密主机。
 [MITM]
-h2 = true
-hostname = %APPEND% app-api.smzdm.com,s3.zdmimg.com,cn-acs.m.cainiao.com,netflow-mtop.cainiao.com,api.m.jd.com,app-api.smzdm.com,api.smzdm.com,*.zdmimg.com,*.cainiao.com,amdc.m.taobao.com,guide-acs.m.taobao.com,ad.12306.cn,114.115.217.129,home.umetrip.com,discardrp.umetrip.com,startup.umetrip.com,t7z.cupid.iqiyi.com,kjp.cupid.iqiyi.com,iface.iqiyi.com,act.vip.iqiyi.com,splashqqlive.gtimg.com,vv.video.qq.com,wa.gtimg.com,btrace.qq.com,mob.bz.mgtv.com,mobile.api.mgtv.com,mobile.da.mgtv.com,a.sinopecsales.com,ocrifs.ejoy.sinopec.com,api.zhihu.com,c.tieba.baidu.com,tiebac.baidu.com,tieba.baidu.com,baichuan.baidu.com,api.weibo.cn,api.weibo.com,mapi.weibo.cn,mapi.weibo.com,weibointl.api.weibo.cn,*.uve.weibo.com,boot.biz.weibo.com,api.bilibili.com,app.bilibili.com,app.biliapi.net,upos-sz-static.bilivideo.com,-*.oaistatic.com,-*.oaiusercontent.com,-*.chatgpt.com,-*.openai.com,-*.chatgpt.livekit.cloud,acs.m.taobao.com,poplayer.template.alibaba.com,api.pinduoduo.com,api.yangkeduo.com,acs4miniapp-inner.m.taobao.com,homepage-api.smzdm.com,s-api.smzdm.com,*.cupid.iqiyi.com,eimg.smzdm.com,qny.smzdm.com,qneimg.smzdm.com,common-api.smzdm.com,m.360buyimg.com,m15.360buyimg.com,vv6.video.qq.com,rdelivery.qq.com
+hostname = %APPEND% -*.oaistatic.com,-*.oaiusercontent.com,-*.chatgpt.com,-*.openai.com,-*.chatgpt.livekit.cloud
